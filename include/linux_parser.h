@@ -30,7 +30,7 @@ std::string Kernel();
 // CPU
 enum CPUStates {
   kUser_ = 0,
-  kNice_,
+  kNice_ ,
   kSystem_,
   kIdle_,
   kIOwait_,
