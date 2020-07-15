@@ -5,6 +5,7 @@
 
 #include "process.h"
 #include "system.h"
+using namespace std;
 
 namespace NCursesDisplay {
 void Display(System& system, int n = 10);
