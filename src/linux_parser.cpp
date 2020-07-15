@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
-
+#include<iostream>
 #include "linux_parser.h"
 
 using std::stof;
@@ -105,20 +105,59 @@ long LinuxParser::UpTime() {
   return std::stol(uptime_); }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+long LinuxParser::Jiffies() {
+
+   return ActiveJiffies () + IdleJiffies (); }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+long LinuxParser::ActiveJiffies() { 
+  std::vector<long> cpu_v = LinuxParser::CpuUtilization();
+
+  long active_jiffies = cpu_v[LinuxParser::CPUStates::kUser_] + cpu_v[LinuxParser::CPUStates::kNice_]
+                      + cpu_v[LinuxParser::CPUStates::kSystem_] + cpu_v[LinuxParser::CPUStates::kIRQ_]
+                      + cpu_v[LinuxParser::CPUStates::kSoftIRQ_] + cpu_v[LinuxParser::CPUStates::kSteal_] ; 
+
+  return active_jiffies; }
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() { 
+  std::vector<long> cpu_v = LinuxParser::CpuUtilization();
+
+  long idle_jiffies = cpu_v[LinuxParser::CPUStates::kIdle_] + cpu_v[LinuxParser::CPUStates::kIOwait_]; 
+  
+  return idle_jiffies; }
+
+long LinuxParser::VirtalJiffies() { 
+  std::vector<long> cpu_v = LinuxParser::CpuUtilization();
+
+  long virtaljiffies = cpu_v[LinuxParser::CPUStates::kGuest_] + cpu_v[LinuxParser::CPUStates::kGuestNice_]; 
+  return virtaljiffies; }
+
+
+
 
 // TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
+vector<long> LinuxParser::CpuUtilization() { 
+  string line, cpu_key, cpu_value;
+  string cpu_path {kProcDirectory + kStatFilename }; 
+  std::ifstream cpu_file (cpu_path);
+  std::vector<long> cpu_values{};
+  if (cpu_file.is_open()){
+    std::getline(cpu_file, line);
+    std::istringstream cpu_aggr_stream (line);
+    cpu_aggr_stream >> cpu_key;
+    if (cpu_key == "cpu"){
+      while (cpu_aggr_stream >> cpu_value){
+        // std::cout << "Cpu_value is : " << cpu_value << std::endl;
+        cpu_values.emplace_back(stol(cpu_value));
+      }
+    }
+  }
+  return cpu_values; }
 
 // TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() { 
