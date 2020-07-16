@@ -20,13 +20,9 @@ System::System () {
         Process process;
         process.Pid(i);
         processes_.emplace_back(process);
-        // std::cout << i << std::endl;
         } 
         std::sort(processes_.begin(), processes_.end());
-        // Process a;
-        // Process b;
-        // std::sort(processes_.begin(), processes_.end(), [](Process& p1, Process& p2){
-        // return(p2.CpuUtilization() > p1.CpuUtilization()); });
+
 
 }
 
