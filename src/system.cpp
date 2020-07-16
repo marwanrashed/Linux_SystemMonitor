@@ -21,9 +21,6 @@ System::System () {
         process.Pid(i);
         processes_.emplace_back(process);
         } 
-        std::sort(processes_.begin(), processes_.end());
-
-
 }
 
 // TODO: Return the system's CPU

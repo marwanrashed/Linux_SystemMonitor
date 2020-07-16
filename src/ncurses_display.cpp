@@ -54,7 +54,7 @@ void NCursesDisplay::DisplaySystem(System& system, WINDOW* window) {
 
 void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
                                       WINDOW* window, int n) {
-  // std::sort(processes.begin(), processes.end());
+  std::sort(processes.begin(), processes.end());
 
   int row{0};
   int const pid_column{2};
