@@ -15,15 +15,19 @@ using std::vector;
 
 System::System () {
     auto pids = LinuxParser::Pids();
+    processes_.clear();
     for (auto i : pids){
-        processes_.emplace_back(Process(i));
+        Process process;
+        process.Pid(i);
+        processes_.emplace_back(process);
         // std::cout << i << std::endl;
         } 
-        // std::sort(processes_.begin(), processes_.end(), std::greater<Process>());
+        std::sort(processes_.begin(), processes_.end());
+        // Process a;
+        // Process b;
+        // std::sort(processes_.begin(), processes_.end(), [](Process& p1, Process& p2){
+        // return(p2.CpuUtilization() > p1.CpuUtilization()); });
 
-        std::sort(processes_.begin(), processes_.end(), [](Process& p1, Process& p2){
-        return(p2.CpuUtilization() < p1.CpuUtilization());
-    });
 }
 
 // TODO: Return the system's CPU
