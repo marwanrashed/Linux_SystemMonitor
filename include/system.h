@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 #include "linux_parser.h"
-
+#include <algorithm>
 #include "process.h"
 #include "processor.h"
 using namespace std;
 
 class System {
  public:
+  System (); 
   Processor& Cpu();                   // TODO: See src/system.cpp
   std::vector<Process>& Processes();  // TODO: See src/system.cpp
   float MemoryUtilization();          // TODO: See src/system.cpp
@@ -22,7 +23,7 @@ class System {
 
   // TODO: Define any necessary private members
  private:
-  Processor cpu_ = {};
+  Processor cpu_;
   std::vector<Process> processes_ = {};
 };
 

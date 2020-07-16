@@ -5,7 +5,7 @@ float Processor::Utilization() {
     long curr_idle, curr_total;
     float diff_total, diff_idle;
     curr_idle = LinuxParser::IdleJiffies();
-    curr_total = LinuxParser::Jiffies();
+    curr_total = LinuxParser::TotalTime();
     diff_total = curr_total - this->prev_total_;
     diff_idle = curr_idle - this->prev_idle_;
 
